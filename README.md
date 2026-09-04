@@ -17,11 +17,11 @@ colcon build --packages-select elder_robot
 ros2 launch elder_robot sim_slam.launch.py
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-# Save map:
+# Save map
 ros2 run nav2_map_server map_saver -f ~/ros2_ws/src/elder_robot/maps/my_map
 ```
 
-## NAV 
+## Navigation
 ```bash
 ros2 launch elder_robot sim_navigation.launch.py
 ```
