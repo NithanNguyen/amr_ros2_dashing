@@ -10,12 +10,6 @@ source install/setup.bash
 colcon build --packages-select elder_robot
 ```
 
-
-1. Source the workspace:
-```bash
-source install/setup.bash
-```
-
 2. Launch the robot in Gazebo:
 ```bash
 # Terminal 1:
