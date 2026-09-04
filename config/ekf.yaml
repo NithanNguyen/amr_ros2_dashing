@@ -1,0 +1,122 @@
+### ekf_filter_node configuration for sensor fusion
+### Kết hợp dữ liệu từ Wheel Odometry và IMU
+
+ekf_filter_node:
+  ros__parameters:
+    # Tần số update của filter (Hz)
+    frequency: 30.0
+    
+    # Delay sensor (giây) - thời gian delay tối đa được chấp nhận
+    sensor_timeout: 0.1
+    
+    # Publish tf transform từ map -> odom và odom -> base_link
+    two_d_mode: true
+    
+    # Frame names
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_footprint
+    world_frame: odom
+    
+    # Transform settings
+    transform_time_offset: 0.0
+    transform_timeout: 0.0
+    
+    # Publish settings
+    publish_tf: true
+    publish_acceleration: false
+    
+    # Print diagnostics
+    print_diagnostics: true
+    debug: false
+    
+    # ============================================
+    # WHEEL ODOMETRY CONFIGURATION
+    # ============================================
+    # Topic: /odom (từ diff_drive plugin)
+    odom0: /odom
+    odom0_config: [false, false, false,    # x, y, z position
+                   false, false, false,    # roll, pitch, yaw orientation
+                   true,  false,  false,    # x_dot, y_dot, z_dot velocity
+                   false, false, true,     # roll_dot, pitch_dot, yaw_dot angular velocity
+                   false, false, false]    # x_ddot, y_ddot, z_ddot acceleration
+    
+    # Differential mode cho odometry
+    odom0_differential: false
+    
+    # Relative mode
+    odom0_relative: false
+    
+    # Queue size
+    odom0_queue_size: 10
+    
+    # Reject outliers nếu Mahalanobis distance > threshold
+    odom0_rejection_threshold: 5.0
+    
+    # ============================================
+    # IMU CONFIGURATION
+    # ============================================
+    # Topic: /imu/data (từ IMU sensor)
+    imu0: /imu/data
+    imu0_config: [false, false, false,     # x, y, z position (IMU không đo position)
+                  true,  true,  true,      # roll, pitch, yaw orientation
+                  false, false, false,     # x_dot, y_dot, z_dot velocity (không dùng)
+                  true,  true,  true,      # roll_dot, pitch_dot, yaw_dot angular velocity
+                  false, false, false]      # x_ddot, y_ddot, z_ddot linear acceleration
+    
+    # Differential mode cho IMU
+    imu0_differential: false
+    
+    # Relative mode
+    imu0_relative: true      # Đặt true để EKF lấy hướng IMU đầu tiên làm gốc 0
+    
+    # Queue size
+    imu0_queue_size: 10
+    
+    # Remove gravitational acceleration
+    imu0_remove_gravitational_acceleration: true
+    
+    # Rejection threshold
+    imu0_rejection_threshold: 5.0
+    
+    # ============================================
+    # PROCESS NOISE COVARIANCE
+    # ============================================
+    # Độ nhiễu của quá trình (càng lớn = tin model ít hơn)
+    # Thứ tự: x, y, z, roll, pitch, yaw, x_dot, y_dot, z_dot, 
+    #         roll_dot, pitch_dot, yaw_dot, x_ddot, y_ddot, z_ddot
+    process_noise_covariance: [0.05,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.05,  0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.06,  0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.03,  0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.03,  0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.06,  0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.025,  0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.025,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.04,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.01,  0.0,   0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.01,  0.0,   0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.02,  0.0,   0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.01,  0.0,   0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.01,  0.0,
+                               0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,    0.0,    0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.015]
+    
+    # ============================================
+    # INITIAL STATE COVARIANCE
+    # ============================================
+    # Độ không chắc chắn ban đầu của state
+    initial_estimate_covariance: [1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,   0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9,  0.0,
+                                  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-9]
