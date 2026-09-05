@@ -1,12 +1,3 @@
-# Simulation Results
-
-### NAVIGATION
-https://github.com/user-attachments/assets/c060a9af-c36d-4316-9943-3eca72dd1148
-
-### SLAM
-https://github.com/user-attachments/assets/f3258027-9760-4acc-950a-ba902da4b198
-
-
 # SIMULATION
 
 1. Build the workspace:
