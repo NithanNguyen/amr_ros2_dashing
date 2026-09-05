@@ -354,4 +354,4 @@ Licensed under the Apache License 2.0, as declared in `package.xml`. See [`LICEN
 
 ## Author
 
-`<AUTHOR_NAME>` — `<CONTACT_EMAIL>`
+`Nguyen Pham Thien An` — `npthienan257@gmail.com`
