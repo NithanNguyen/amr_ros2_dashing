@@ -1,0 +1,19 @@
+# Python dependencies for the benchmarking scripts in scripts/.
+#
+# These are NOT needed to build or launch the ROS 2 package itself.
+# They are required only by:
+#   scripts/monitor_sim_slam.py
+#   scripts/monitor_sim_nav.py
+#   scripts/monitor_power_ros2.py
+#
+# ROS 2 Dashing targets Ubuntu 18.04, whose system Python is 3.6.
+# Install with:
+#   python3 -m pip install -r requirements.txt
+#
+# rclpy is intentionally absent: it is provided by the ROS 2 installation,
+# not by pip.
+
+psutil>=5.6
+pandas>=0.24
+matplotlib>=3.0
+numpy>=1.16
